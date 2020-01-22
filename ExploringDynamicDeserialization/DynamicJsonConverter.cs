@@ -52,7 +52,7 @@ namespace ExploringDynamicDeserialization {
 
         private object ReadObject(JsonElement jsonElement) {
             var props = jsonElement.EnumerateObject().Select(x => x.Name).ToArray();
-            var type = AnonymousTypes<TEntity>.GetOrAddType(props);
+            var type = Projection<TEntity>.GetOrAddType(props);
             var data = jsonElement.GetRawText();
             return JsonSerializer.Deserialize(data, type);            
         }

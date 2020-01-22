@@ -23,9 +23,17 @@ namespace ExploringDynamicDeserialization {
             sw2.Stop();
             Console.WriteLine("Elapsed={0}", sw2.Elapsed);
 
+            var addr3 = new Address { StreetAddress = "123 Main" };
+
+            //foreach (var prop in d[0].GetType().GetProperties())
+            //    Dynonymous<Address>.Properties[prop.Name].SetValue(addr3, prop.GetValue(d[0]));
+
+            Projection<Address>.Populate(d[0], addr3);
 
             var jsonOut = JsonSerializer.Serialize(d, new JsonSerializerOptions { WriteIndented = true });
+            var json2Out = JsonSerializer.Serialize(addr3, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonOut);
+            Console.WriteLine(json2Out);
         }
     }
 }
