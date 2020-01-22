@@ -28,7 +28,7 @@ namespace ExploringDynamicDeserialization {
             //foreach (var prop in d[0].GetType().GetProperties())
             //    Dynonymous<Address>.Properties[prop.Name].SetValue(addr3, prop.GetValue(d[0]));
 
-            Projection<Address>.Populate(d[0], addr3);
+            Projection<Address>.Patch(d[0], addr3);
 
             var jsonOut = JsonSerializer.Serialize(d, new JsonSerializerOptions { WriteIndented = true });
             var json2Out = JsonSerializer.Serialize(addr3, new JsonSerializerOptions { WriteIndented = true });

@@ -190,12 +190,12 @@ namespace ExploringDynamicDeserialization {
         }
 
         /// <summary>
-        /// Used to populate an entity with property values from
+        /// Used to patch (update) an entity with property values from
         /// a projection (source)
         /// </summary>
         /// <param name="source">a projection -- an object with a subset of TEntity properties</param>
         /// <param name="destination">the object to which the source data will be copied </param>
-        public static void Populate(dynamic source, TEntity destination) {
+        public static void Patch(dynamic source, TEntity destination) {
             var type = source.GetType();
             if (type == typeof(JsonElement))
                 throw new NotSupportedException("source is a JsonElement, which is not supported.");
