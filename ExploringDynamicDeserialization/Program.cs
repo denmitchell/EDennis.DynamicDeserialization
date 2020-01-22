@@ -7,29 +7,33 @@ using System.Text.Json;
 namespace ExploringDynamicDeserialization {
     class Program {
         static void Main(string[] args) {
-            var options = new JsonSerializerOptions();
-            options.Converters.Add(new DynamicJsonConverter<Address>());
+
+            //read in a test JSON file
             var json = File.ReadAllText("partial1.json");
 
+            //build the converter
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new DynamicJsonConverter<Address>());
+
+            //test (uncached) creation and use of projection types
             var sw = new Stopwatch();
             sw.Start();
             var d = JsonSerializer.Deserialize<List<dynamic>>(json, options);
             sw.Stop();
-            Console.WriteLine("Elapsed={0}", sw.Elapsed);
+            Console.WriteLine("Uncached ... Elapsed={0}", sw.Elapsed);
 
+            //test cached retrieval and use of projection types
             var sw2 = new Stopwatch();
             sw2.Start();
-            var d2 = JsonSerializer.Deserialize<List<dynamic>>(json, options);
+            var _ = JsonSerializer.Deserialize<List<dynamic>>(json, options);
             sw2.Stop();
-            Console.WriteLine("Elapsed={0}", sw2.Elapsed);
+            Console.WriteLine("Cached ... Elapsed={0}", sw2.Elapsed);
 
+            //try patching a fully typed object
             var addr3 = new Address { StreetAddress = "123 Main" };
-
-            //foreach (var prop in d[0].GetType().GetProperties())
-            //    Dynonymous<Address>.Properties[prop.Name].SetValue(addr3, prop.GetValue(d[0]));
-
             Projection<Address>.Patch(d[0], addr3);
 
+            //serialize the objects.
             var jsonOut = JsonSerializer.Serialize(d, new JsonSerializerOptions { WriteIndented = true });
             var json2Out = JsonSerializer.Serialize(addr3, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine(jsonOut);
