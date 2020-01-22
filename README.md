@@ -1,0 +1,2 @@
+# EDennis.DynamicDeserialization
+This repository provides a Projection class and a JsonConverter class that together allow deserialization of json into dynamic objects, where the underlying type is created on the fly, using a subset of properties from a base class (TEntity).  For performance reasons, generated "projection" types are statically cached in a ConcurrentDictionary.  For convenience, the Projection class provides a "Patch" method that can be used to patch an existing entity with data provided by a dynamic object. 
